@@ -150,6 +150,16 @@ if [ "${PIPESTATUS[*]}" != "0 0" ]; then
   exit 1
 fi
 
+
+echo "-----> Building Clojurescript"
+echo "      "
+cd $BUILD_DIR
+lein cljsbuild once 2>&1 | sed -u 's/^/       /'
+if [ "${PIPESTATUS[*]}" != "0 0" ]; then
+  echo " !     Failed to build Clojurescript with Leiningen"
+  exit 1
+fi
+
 # populate profile.d
 PROFILE_PATH="$BUILD_DIR/.profile.d/clojure.sh"
 mkdir -p $(dirname $PROFILE_PATH)
